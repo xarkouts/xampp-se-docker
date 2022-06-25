@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  
+  mysql:
+   image: mysql:5.7
+   environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      
+   container_name: db
+   volumes:
+   - save_db:/var/lib/mysql
+   networks:
+    - sindesis_servers
+     
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+     - mysql
+    ports:
+     - 3000:80
+    links:
+    - mysql:db
+    container_name: diaxirisi_basi 
+    networks:
+     - sindesis_servers
+  server:
+   build:
+     context: ./
+   container_name: server
+   volumes:
+   - ./pame:/var/www/html/
+   ports:
+    - 80:80
+   
+
+   networks:
+     - sindesis_servers         
+networks:
+ sindesis_servers:
+volumes:
+   - save_db:  
+    
+   
+  
+
+
+  
